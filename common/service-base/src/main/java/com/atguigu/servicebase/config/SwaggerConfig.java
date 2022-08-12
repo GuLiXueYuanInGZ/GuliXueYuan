@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -34,7 +35,7 @@ public class SwaggerConfig {
                 .title("网站-课程中心API文档")
                 .description("本文档描述了课程中心微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("Helen", "http://atguigu.com", "55317332@qq.com"))
+                .contact(new Contact("Youtonzhen", "http://atguigu.com", "55317332@qq.com"))
                 .build();
     }
 }
