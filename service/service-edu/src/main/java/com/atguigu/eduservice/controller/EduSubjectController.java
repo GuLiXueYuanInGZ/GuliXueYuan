@@ -2,16 +2,18 @@ package com.atguigu.eduservice.controller;
 
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.entity.vo.OneSubjectVo;
 import com.atguigu.eduservice.service.EduSubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.License;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -37,6 +39,15 @@ public class EduSubjectController {
         // 1. 获取上传的 Excel 文件
         subjectService.importSubjectData(file, subjectService);
         return R.ok();
+    }
+
+    // 课程分类数据接口
+    @ApiOperation(value = "显示课程分类")
+    @GetMapping("getAllSubjects")
+    public R listAllSubjects() {
+        List<OneSubjectVo> allSubjectList = subjectService.listAllSubjects();
+
+        return R.ok().data("list", allSubjectList);
     }
 
 
