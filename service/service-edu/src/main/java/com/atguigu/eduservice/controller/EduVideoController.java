@@ -2,10 +2,13 @@ package com.atguigu.eduservice.controller;
 
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.client.VodClient;
 import com.atguigu.eduservice.entity.EduChapter;
 import com.atguigu.eduservice.entity.EduVideo;
 import com.atguigu.eduservice.entity.vo.VideoVo;
 import com.atguigu.eduservice.service.EduVideoService;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
+import com.mysql.cj.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,11 +32,15 @@ public class EduVideoController {
     @Autowired
     private EduVideoService videoService;
 
+    @Autowired
+    private VodClient vodClient;
+
     @ApiOperation(value = "新增小节")
     @PostMapping("addVideo")
     public R addVideo(
             @ApiParam(name = "video", value = "小节对象", required = true)
             @RequestBody EduVideo video) {
+        System.out.println("添加小节" + video);
         videoService.save(video);
         return R.ok();
     }
@@ -53,6 +60,7 @@ public class EduVideoController {
     public R updateVideo(
             @ApiParam(name = "video", value = "小节对象", required = true)
             @RequestBody EduVideo video){
+        System.out.println("更新小节" + video);
         videoService.updateById(video);
         return R.ok();
     }
@@ -62,6 +70,17 @@ public class EduVideoController {
     public R removeById(
             @ApiParam(name = "id", value = "课时ID", required = true)
             @PathVariable String id){
+
+        // 根据小节 id 查询视频 id
+        String videoSourceId = videoService.getById(id).getVideoSourceId();
+
+        // 删除视频资源
+        if (!StringUtils.isNullOrEmpty(videoSourceId)) {
+            R r = vodClient.removeVideo(videoSourceId);
+            if (r.getCode() == 20001) {
+                throw new GuliException(20001, r.getMessage());
+            }
+        }
 
         boolean result = videoService.removeVideoById(id);
         if(result){
