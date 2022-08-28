@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class BannerApiController {
     @Autowired
     private CrmBannerService bannerService;
 
+    @Cacheable(value = "banner", key = "'selectIndexList'") // 配置 redis 缓存
     @ApiOperation(value = "获取首页banner")
     @GetMapping("getAllBanner")
     public R index() {

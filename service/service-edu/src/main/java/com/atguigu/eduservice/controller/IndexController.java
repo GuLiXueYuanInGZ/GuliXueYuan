@@ -7,6 +7,7 @@ import com.atguigu.eduservice.service.EduCourseService;
 import com.atguigu.eduservice.service.EduTeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class IndexController {
     private EduTeacherService teacherService;
 
     //查询前8条热门课程，查询前4条名师
+    @Cacheable(value = "indexData", key = "'selectIndexList'") // 配置 redis 缓存
     @GetMapping("")
     public R index() {
         //查询前8条热门课程
