@@ -1,10 +1,17 @@
 package com.atguigu.vod.controller;
 
 
+import com.aliyuncs.AcsResponse;
+import com.aliyuncs.DefaultAcsClient;
 import com.atguigu.commonutils.R;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
 import com.atguigu.vod.service.VideoService;
+import com.atguigu.vod.util.AliYunVODSDKUtils;
+import com.atguigu.vod.util.ConstantPropertiesUtil;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.collections4.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,5 +56,22 @@ public class VideoController {
 
         videoService.removeVideoList(videoIdList);
         return R.ok().message("视频删除成功");
+    }
+
+    //根据视频id获得视频凭证
+    @GetMapping("getPlayAuth/{id}")
+    public R getPlayAuth(@PathVariable String id){
+        try{
+            DefaultAcsClient client = AliYunVODSDKUtils.initVodClient(ConstantPropertiesUtil.ACCESS_KEY_ID, ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+            GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+            request.setVedioId(id);
+
+            GetVideoPlayAuthResponse response = client.getAcsResponse(request);
+            String playAuth = response.getPlayAuth();
+            return R.ok().data("playAuth", playAuth);
+
+        }catch (Exception e){
+            throw new GuliException(20001,"获取凭证失败");
+        }
     }
 }
