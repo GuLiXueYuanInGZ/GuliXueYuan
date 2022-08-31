@@ -104,4 +104,9 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         member.setAvatar("https://guli-edu-in-gz.oss-cn-fuzhou.aliyuncs.com/2022/08/12/6cbd587c-783c-4d3d-8187-b9a7c757b74afile.png");
         baseMapper.insert(member);
     }
+
+    @Override
+    public Integer countRegisterDay(String day) {
+        return baseMapper.countRegisterDay(day);
+    }
 }
