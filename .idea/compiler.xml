@@ -11,11 +11,9 @@
         <module name="service-edu" />
         <module name="service-ucenter" />
         <module name="service-base" />
-        <module name="service-statistics" />
         <module name="common-utils" />
         <module name="service-oss" />
         <module name="service-cms" />
-        <module name="service-order" />
         <module name="service-vod" />
       </profile>
     </annotationProcessing>
