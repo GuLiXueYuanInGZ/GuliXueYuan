@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient("service-ucenter")
 public interface UcenterClient {
     //查询某一天注册人数
-    @GetMapping("/educenter/member/countRegister/{day}")
+    @GetMapping("/educenter/ucenter-member/countRegister/{day}")
     public R countRegister(@PathVariable("day") String day);
 }

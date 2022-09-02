@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface EduClient {
 
     //查询课程信息
-    @PostMapping("/eduservice/coursefront/{id}")
+    @PostMapping("/eduservice/coursefront/getCourseInfoOrder/{id}")
     public CourseWebVoOrder getCourseInfoOrder(@PathVariable("id") String id);
 }

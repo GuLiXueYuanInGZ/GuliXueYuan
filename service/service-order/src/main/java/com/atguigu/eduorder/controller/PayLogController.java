@@ -4,10 +4,7 @@ package com.atguigu.eduorder.controller;
 import com.atguigu.commonutils.R;
 import com.atguigu.eduorder.service.PayLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,6 +17,7 @@ import java.util.Map;
  * @since 2022-08-30
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/eduorder/pay-log")
 public class PayLogController {
     @Autowired

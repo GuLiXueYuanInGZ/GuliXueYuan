@@ -1,7 +1,9 @@
 package com.atguigu.eduservice.controller.front;
 
+import com.atguigu.commonutils.JwtUtils;
 import com.atguigu.commonutils.R;
 import com.atguigu.commonutils.ordervo.CourseWebVoOrder;
+import com.atguigu.eduservice.client.OrderClient;
 import com.atguigu.eduservice.entity.EduCourse;
 //import com.atguigu.eduservice.entity.EduTeacher;
 import com.atguigu.eduservice.entity.frontvo.CourseFrontVo;
@@ -14,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,9 @@ public class CourseFrontController {
     @Autowired
     private EduChapterService chapterService;
 
+    @Autowired
+    private OrderClient orderClient;
+
     //条件查询课程
     @PostMapping("getFrontCourseList/{page}/{limit}")
     public R getFrontCourseList(@PathVariable long page, @PathVariable long limit,
@@ -39,13 +45,19 @@ public class CourseFrontController {
         return R.ok().data(map);
     }
 
+    // 课程详情
     @GetMapping("getFrontCourseInfo/{courseId}")
     public R getFrontCourseInfo(@PathVariable String courseId){
+//        , HttpServletRequest request
+//        JwtUtils.getMemberIdByJwtToken(request)
         CourseWebVo courseWebVo = courseService.getBaseCourseInfo(courseId);
 
         List<ChapterVo> chapterVideoList = chapterService.getChapterVideoByCourseId(courseId);
 
-        return R.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList);
+        //远程调用，判断课程是否被购买
+        boolean buyCourse = orderClient.isBuyCourse("1564159036549517313", courseId);
+
+        return R.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList).data("isbuy",buyCourse);
     }
 
     //查询课程信息

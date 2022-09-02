@@ -48,5 +48,18 @@ public class OrderController {
         Order order = orderService.getOne(wrapper);
         return R.ok().data("item",order);
     }
+
+    // 3. 查询订单是否支付成功
+    @GetMapping("isBuyCourse/{memberid}/{courseid}")
+    public boolean isBuyCourse(@PathVariable String memberid,
+                               @PathVariable String courseid) {
+        //订单状态是1表示支付成功
+        int count = orderService.count(new QueryWrapper<Order>().eq("member_id", memberid).eq("course_id", courseid).eq("status", 1));
+        if(count>0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
